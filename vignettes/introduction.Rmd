@@ -11,7 +11,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
+```{r opts, include = FALSE}
 knitr::opts_chunk$set(
     collapse = TRUE,
     comment = "#>"
@@ -66,26 +66,25 @@ This is a typical output from a differential expression analysis such as DESeq2,
 
 The pbmc.markers data is in the "degs" format, so we will set `type = "degs"` in the toppFun function. We will also need to specify the relevant columns for clusters, genes, p values, and log fold changes:
 
-```{r toppFun_1, eval=FALSE}
+```{r toppFun_1}
 # This is how you would run the analysis with live data (requires internet)
-toppdata.pbmc <- toppFun(
-    input_data = pbmc.markers,
-    type = "degs",
-    topp_categories = NULL,
-    cluster_col = "cluster",
-    gene_col = "gene",
-    p_val_col = "p_val_adj",
-    logFC_col = "avg_log2FC"
-)
-```
+if (curl::has_internet()) {
+     toppdata.pbmc <- toppFun(
+        input_data = pbmc.markers,
+        type = "degs",
+        topp_categories = NULL,
+        cluster_col = "cluster",
+        gene_col = "gene",
+        p_val_col = "p_val_adj",
+        logFC_col = "avg_log2FC"
+    )
+} else {
+   data("toppdata.pbmc")
+}
 
-For this vignette, we'll use the pre-computed results that are included with the package:
-
-```{r load_cached_data}
-# Load pre-computed toppFun results
-data("toppdata.pbmc")
 head(toppdata.pbmc)
 ```
+
 
 Additionally, you can run toppFun on all ToppGene categories by setting topp_categories to NULL. You may also provide 1 or more specific categories as a list. To see all ToppGene categories, you can also use the function get_ToppCats():
 

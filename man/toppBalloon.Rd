@@ -12,13 +12,15 @@ toppBalloon(
   cluster_col = "Cluster",
   filename = "toppBalloon",
   save = FALSE,
-  save_dir = NULL,
-  height = 5,
-  width = 10
+  save_dir = tempdir(),
+  height = 6,
+  width = 8,
+  slot_name = "toppData",
+  ...
 )
 }
 \arguments{
-\item{toppData}{A toppData results dataframe}
+\item{toppData}{A toppData results dataframe, SummarizedExperiment, or SingleCellExperiment object}
 
 \item{categories}{The topp categories to plot}
 
@@ -37,15 +39,26 @@ toppBalloon(
 \item{height}{Height of the saved balloon plot}
 
 \item{width}{Width of the saved balloon plot}
+
+\item{slot_name}{For SE/SCE objects, the metadata slot name containing toppData (default: "toppData")}
+
+\item{...}{Additional parameters for future use}
 }
 \value{
-ggplot
+ggplot object or list of ggplot objects
 }
 \description{
-Create a balloon plot from toppdata results
+This function creates balloon plots from ToppGene enrichment results. It accepts either
+a data.frame with toppData results, or a SummarizedExperiment/SingleCellExperiment
+object with toppData stored in the metadata.
 }
 \examples{
 data("toppdata.pbmc")
+
+# With data.frame
 toppBalloon(toppdata.pbmc, balloons = 3, save = FALSE)
+
+# With SummarizedExperiment (if toppData stored in metadata)
+# toppBalloon(se_object, categories = "GeneOntologyMolecularFunction")
 
 }

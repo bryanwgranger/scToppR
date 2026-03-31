@@ -36,8 +36,10 @@ A saved file
 Save toppData results (optionally) split by celltype/cluster
 }
 \examples{
-data("toppData")
-\dontrun{
-toppSave(toppData, filename = "toppFun_results", split = TRUE, format = "xlsx")
-}
+data("toppdata.ifnb")
+toppSave(toppdata.ifnb, 
+    filename = "toppFun_results", 
+    save_dir = tempdir(), 
+    split = TRUE, 
+    format = "xlsx")
 }

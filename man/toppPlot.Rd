@@ -2,29 +2,30 @@
 % Please edit documentation in R/topp_plot.R
 \name{toppPlot}
 \alias{toppPlot}
-\title{Create a dotplot from toppdata results
-NEW: this accepts only 1 category}
+\title{Create a dotplot from toppdata results}
 \usage{
 toppPlot(
   toppData,
-  category,
+  category = NULL,
   clusters = NULL,
   cluster_col = "Cluster",
+  p_val_adj = "QValueFDRBH",
+  p_val_display = "FDR_BH",
   num_terms = 10,
-  p_val_adj = "BH",
-  p_val_display = "log",
   save = FALSE,
-  save_dir = NULL,
-  width = 5,
+  save_dir = tempdir(),
+  width = 8,
   height = 6,
   file_prefix = "toppPlot",
-  y_axis_text_size = 8,
   combine = FALSE,
-  ncols = NULL
+  ncols = 2,
+  y_axis_text_size = 10,
+  slot_name = "toppData",
+  ...
 )
 }
 \arguments{
-\item{toppData}{A toppData results dataframe}
+\item{toppData}{A toppData results dataframe, SummarizedExperiment, or SingleCellExperiment object}
 
 \item{category}{The topp categories to plot}
 
@@ -32,11 +33,11 @@ toppPlot(
 
 \item{cluster_col}{The column name for clusters (default: "Cluster")}
 
-\item{num_terms}{The number of terms from the toppData results to be plotted, per cluster}
-
 \item{p_val_adj}{The P-value correction method: "BH", "Bonferroni", "BY", or "none"}
 
 \item{p_val_display}{If "log", display the p-value in terms of -log10(p_value)}
+
+\item{num_terms}{The number of terms from the toppData results to be plotted, per cluster}
 
 \item{save}{Whether to save the file automatically}
 
@@ -48,24 +49,34 @@ toppPlot(
 
 \item{file_prefix}{file prefix if saving the plot - the cluster name is also added automatically}
 
-\item{y_axis_text_size}{Size of the Y axis text - for certain categories, it's helpful to decrease this}
-
 \item{combine}{If TRUE and multiple clusters selected, return a patchwork object of all plots; if FALSE return list of plots}
 
 \item{ncols}{If patchwork element returned, number of columns for subplots}
+
+\item{y_axis_text_size}{Size of the Y axis text - for certain categories, it's helpful to decrease this}
+
+\item{slot_name}{For SE/SCE objects, the metadata slot name containing toppData (default: "toppData")}
+
+\item{...}{Additional parameters for future use}
 }
 \value{
-ggplot
+ggplot object or list of ggplot objects
 }
 \description{
-Create a dotplot from toppdata results
-NEW: this accepts only 1 category
+This function creates dotplots from ToppGene enrichment results. It accepts either
+a data.frame with toppData results, or a SummarizedExperiment/SingleCellExperiment
+object with toppData stored in the metadata.
 }
 \examples{
 data("toppdata.pbmc")
+
+# With data.frame
 toppPlot(toppdata.pbmc,
     category = "GeneOntologyMolecularFunction",
     clusters = 0,
     save = FALSE
 )
+
+# With SummarizedExperiment (if toppData stored in metadata)
+# toppPlot(se_object, category = "GeneOntologyMolecularFunction")
 }

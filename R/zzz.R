@@ -1,3 +1,16 @@
+# Declare global variables to avoid R CMD check NOTEs
+# These variables are used in ggplot2/dplyr expressions with non-standard evaluation
+globalVariables(c(
+    "Category", 
+    "GenesInTerm", 
+    "GenesInTermInQuery", 
+    "Name", 
+    "QValueFDRBH", 
+    "geneRatio", 
+    "genes_submit_cutoff", 
+    "nlog10_fdr"
+))
+
 # print a message warning users that data from ToppGene must be used according
 # to their terms of use
 .onAttach <- function(libname, pkgname) {

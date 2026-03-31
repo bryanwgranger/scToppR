@@ -11,7 +11,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, echo = FALSE}
+```{r opts, echo = FALSE}
 suppressWarnings(library(knitr))
 
 opts_chunk$set(tidy = FALSE, message = FALSE, warning = FALSE)
@@ -56,22 +56,23 @@ ifnb.de.filtered <- ifnb.de |>
 # Running scToppR with Differential Expression Results
 With these results, we will use scToppR to querry the ToppGene database for all categories for each cluster using the toppFun() function. This function requires users to specify the columns in their dataset.
 
-```{r toppFun, eval=FALSE}
+```{r toppFun}
 # This is how you would run the analysis with live data (requires internet)
-toppdata.ifnb <- toppFun(input_data = ifnb.de.filtered,
-    type = "degs",
-    gene_col = "gene",
-    cluster_col = "celltype",
-    p_val_col = "p_val_adj",
-    logFC_col = "avg_log2FC"
-)
+if (curl::has_internet()) {
+    toppdata.ifnb <- toppFun(input_data = ifnb.de.filtered,
+        type = "degs",
+        gene_col = "gene",
+        cluster_col = "celltype",
+        p_val_col = "p_val_adj",
+        logFC_col = "avg_log2FC"
+    )
+} else {
+    data("toppdata.ifnb")
+}
+head(toppdata.ifnb)
+
 ```
 
-```{r load_cached_ifnb}
-# For this vignette, we'll use pre-computed results from IFNB data
-data("toppdata.ifnb")
-head(toppdata.ifnb)
-```
 
 As the code reminds you, the use of this data must be done so in accordance with ToppGene's Terms of Use. For more information, please visit: https://toppgene.cchmc.org/navigation/termsofuse.jsp
 
@@ -103,12 +104,12 @@ All of these plots can also be automatically saved by the toppPlot() function. T
 
 The cluster/celltype name will be automatically added to the filename prior to saving.
 
-```{r plot_save, eval=FALSE}
+```{r plot_save}
 plot_list <- toppPlot(toppdata.ifnb,
     category = "GeneOntologyMolecularFunction",
     clusters = NULL,
     save = TRUE,
-    save_dir = "./GO_results",
+    save_dir = tempdir(),
     file_prefix = "GO_molecular_function"
 )
 ```
@@ -142,10 +143,10 @@ toppBalloon(toppdata.ifnb,
 # Saving ToppGene Results
 To save toppData results, scToppR also includes a toppSave() function. This function can save the toppData results as a single file, or it can split the data into different clusters/celltypes and save each individually. To do so, set `save = TRUE` in the function call. The function saves the files as Excel spreadsheets by default, but this can be changed to .csv or .tsv files using the `format` parameter.
 
-```{r save, eval=FALSE}
+```{r save}
 toppSave(toppdata.ifnb,
     filename = "IFNB_toppData",
-    save_dir = "./toppData_results",
+    save_dir = tempdir(),
     split = TRUE,
     format = "xlsx"
 )

@@ -404,10 +404,12 @@ get_ToppCats <- function() {
 #' @importFrom dplyr filter
 #' @importFrom utils write.table
 #' @examples
-#' data("toppData")
-#' \dontrun{
-#' toppSave(toppData, filename = "toppFun_results", split = TRUE, format = "xlsx")
-#' }
+#' data("toppdata.ifnb")
+#' toppSave(toppdata.ifnb, 
+#'     filename = "toppFun_results", 
+#'     save_dir = tempdir(), 
+#'     split = TRUE, 
+#'     format = "xlsx")
 #' @export
 toppSave <- function(toppData,
                      filename = "toppData_results",
@@ -539,4 +541,78 @@ toppSave <- function(toppData,
     if (isTRUE(verbose)) {
         message("Saving file:", file.path(save_dir, save_filename), "\n")
     }
+}
+
+#' Add toppData results to SingleCellExperiment or SummarizedExperiment metadata
+#'
+#' @description
+#' A convenience function to store toppData enrichment results in the metadata
+#' slot of a SingleCellExperiment or SummarizedExperiment object. Results are 
+#' stored directly under the specified slot name, with optional analysis parameters
+#' stored in a separate \code{slot_name_params} slot.
+#'
+#' @param sce A SingleCellExperiment or SummarizedExperiment object
+#' @param toppData_results A data.frame of toppData results from toppFun()
+#' @param slot_name Name for the metadata slot (default: "toppData")
+#' @param include_params Logical, whether to include analysis parameters and timestamp
+#'   in a separate \code{slot_name_params} slot (default: TRUE)
+#' @return SingleCellExperiment or SummarizedExperiment object with toppData stored in metadata
+#' @examples
+#' library(airway)
+#' data("airway")  # example SummarizedExperiment object
+#' data("toppdata.airway")  # example toppData results
+#' se_with_topp <- add_toppData(airway, toppdata.airway)
+#' 
+#' # Access results directly
+#' topp_results <- S4Vectors::metadata(se_with_topp)$toppData
+#' 
+#' # Access analysis parameters (if include_params = TRUE)
+#' topp_params <- S4Vectors::metadata(se_with_topp)$toppData_params
+#' @export
+add_toppData <- function(sce, 
+                                toppData_results, 
+                                slot_name = "toppData",
+                                include_params = TRUE) {
+  
+  # Check if required packages are available
+  if (!requireNamespace("SummarizedExperiment", quietly = TRUE)) {
+    stop("SummarizedExperiment package is required but not available. ",
+         "Please install it with: BiocManager::install('SummarizedExperiment')")
+  }
+  
+  if (!requireNamespace("S4Vectors", quietly = TRUE)) {
+    stop("S4Vectors package is required but not available. ",
+         "Please install it with: BiocManager::install('S4Vectors')")
+  }
+  
+  # Validate inputs
+  if (!inherits(sce, "SummarizedExperiment")) {
+    stop("sce must be a SummarizedExperiment or SingleCellExperiment object")
+  }
+  
+  if (!is.data.frame(toppData_results)) {
+    stop("toppData_results must be a data.frame")
+  }
+  
+  # Store results in metadata
+  S4Vectors::metadata(sce)[[slot_name]] <- toppData_results
+  
+  if (include_params) {
+    params_slot <- paste0(slot_name, "_params")
+    S4Vectors::metadata(sce)[[params_slot]] <- list(
+      timestamp = Sys.time(),
+      n_terms = nrow(toppData_results),
+      clusters = unique(toppData_results$cluster),
+      categories = unique(toppData_results$Category)
+    )
+    message("Added toppData results to metadata slot '", slot_name, "'")
+    message("Added analysis parameters to metadata slot '", params_slot, "'")
+    message("Access results with: S4Vectors::metadata(sce)$", slot_name)
+    message("Access parameters with: S4Vectors::metadata(sce)$", params_slot)
+  } else {
+    message("Added toppData results to metadata slot '", slot_name, "'")
+    message("Access with: S4Vectors::metadata(sce)$", slot_name)
+  }
+  
+  return(sce)
 }

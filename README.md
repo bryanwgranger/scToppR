@@ -10,8 +10,9 @@ Please note: The use of any data from ToppGene is governed by their [Terms of Us
 
 This package can be installed from BioConductor:
 ```
-if (!requireNamespace('BiocManager', quietly = TRUE))
-install.packages('BiocManager')
+if (!requireNamespace('BiocManager', quietly = TRUE)) {
+    install.packages('BiocManager')
+}
 
 BiocManager::install('scToppR')
 library(scToppR)
