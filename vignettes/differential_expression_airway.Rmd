@@ -88,7 +88,7 @@ As the code reminds you, the use of this data must be done so in accordance with
 If you have an existing SummarizedExperiment or SingleCellExperiment object, scToppR also includes a function to add the toppData results to the metadata of that object. This allows users to easily access their ToppGene results within their existing data objects.
 ```{r save_to_se}
 
-se <- add_toppData(se, toppdata.airway)
+se <- addToppData(se, toppdata.airway)
 print(head(metadata(se)$toppData))
 ```
 

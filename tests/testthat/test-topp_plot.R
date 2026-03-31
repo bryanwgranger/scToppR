@@ -52,7 +52,7 @@ test_that("toppPlot works with SummarizedExperiment objects", {
     )
     
     # Add toppData to metadata
-    se <- add_toppData(se, toppdata.pbmc, include_params = FALSE)
+    se <- addToppData(se, toppdata.pbmc, include_params = FALSE)
     
     # Test that the method works
     dotplot <- toppPlot(se, 
@@ -76,7 +76,7 @@ test_that("toppBalloon works with SummarizedExperiment objects", {
     )
     
     # Add toppData to metadata
-    se <- add_toppData(se, toppdata.pbmc, include_params = FALSE)
+    se <- addToppData(se, toppdata.pbmc, include_params = FALSE)
     
     # Test that the method works
     balloonplot <- toppBalloon(se, 
@@ -99,7 +99,7 @@ test_that("toppPlot works with SingleCellExperiment objects", {
     )
     
     # Add toppData to metadata
-    sce <- add_toppData(sce, toppdata.pbmc, include_params = FALSE)
+    sce <- addToppData(sce, toppdata.pbmc, include_params = FALSE)
     
     # Test that the method works
     dotplot <- toppPlot(sce, 
@@ -123,7 +123,7 @@ test_that("toppBalloon works with SingleCellExperiment objects", {
     )
     
     # Add toppData to metadata
-    sce <- add_toppData(sce, toppdata.pbmc, include_params = FALSE)
+    sce <- addToppData(sce, toppdata.pbmc, include_params = FALSE)
     
     # Test that the method works
     balloonplot <- toppBalloon(sce, 
@@ -146,7 +146,7 @@ test_that("S3 methods work with custom slot names", {
     )
     
     # Add toppData to custom metadata slot
-    se <- add_toppData(se, toppdata.pbmc, slot_name = "enrichment_results", include_params = FALSE)
+    se <- addToppData(se, toppdata.pbmc, slot_name = "enrichment_results", include_params = FALSE)
     
     # Test that the method works with custom slot name
     dotplot <- toppPlot(se, 
@@ -191,7 +191,7 @@ test_that("S3 methods handle invalid slot names gracefully", {
     )
     
     # Add toppData to metadata
-    se <- add_toppData(se, toppdata.pbmc, include_params = FALSE)
+    se <- addToppData(se, toppdata.pbmc, include_params = FALSE)
     
     # Test error handling for invalid slot name
     expect_error(
@@ -241,7 +241,7 @@ test_that("S3 methods pass parameters correctly", {
     )
     
     # Add toppData to metadata
-    se <- add_toppData(se, toppdata.pbmc, include_params = FALSE)
+    se <- addToppData(se, toppdata.pbmc, include_params = FALSE)
     
     # Test multiple clusters with SE method
     dotplot_list <- toppPlot(se, 

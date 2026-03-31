@@ -388,7 +388,7 @@ test_that("get_Entrez function works correctly", {
     expect_equal(entrez_result[1], 338)  # FLDB
 })
 
-test_that("add_toppData function works with different object types", {
+test_that("addToppData function works with different object types", {
     if (requireNamespace("SummarizedExperiment", quietly = TRUE) &&
         requireNamespace("S4Vectors", quietly = TRUE)) {
         
@@ -403,26 +403,26 @@ test_that("add_toppData function works with different object types", {
         data("toppdata.ifnb")
         
         # Test basic functionality
-        se_with_data <- add_toppData(se, toppdata.ifnb, include_params = FALSE)
+        se_with_data <- addToppData(se, toppdata.ifnb, include_params = FALSE)
         expect_true("toppData" %in% names(metadata(se_with_data)))
         
         # Test with parameters
-        se_with_params <- add_toppData(se, toppdata.ifnb, include_params = TRUE)
+        se_with_params <- addToppData(se, toppdata.ifnb, include_params = TRUE)
         expect_true("toppData" %in% names(metadata(se_with_params)))
         expect_true("toppData_params" %in% names(metadata(se_with_params)))
         
         # Test custom slot name
-        se_custom <- add_toppData(se, toppdata.ifnb, slot_name = "enrichment")
+        se_custom <- addToppData(se, toppdata.ifnb, slot_name = "enrichment")
         expect_true("enrichment" %in% names(metadata(se_custom)))
         
         # Test error conditions
         expect_error(
-            add_toppData("not_se_object", toppdata.ifnb),
+            addToppData("not_se_object", toppdata.ifnb),
             "must be a SummarizedExperiment"
         )
         
         expect_error(
-            add_toppData(se, "not_dataframe"),
+            addToppData(se, "not_dataframe"),
             "must be a data.frame"
         )
     }

@@ -561,7 +561,7 @@ toppSave <- function(toppData,
 #' library(airway)
 #' data("airway")  # example SummarizedExperiment object
 #' data("toppdata.airway")  # example toppData results
-#' se_with_topp <- add_toppData(airway, toppdata.airway)
+#' se_with_topp <- addToppData(airway, toppdata.airway)
 #' 
 #' # Access results directly
 #' topp_results <- S4Vectors::metadata(se_with_topp)$toppData
@@ -569,7 +569,7 @@ toppSave <- function(toppData,
 #' # Access analysis parameters (if include_params = TRUE)
 #' topp_params <- S4Vectors::metadata(se_with_topp)$toppData_params
 #' @export
-add_toppData <- function(sce, 
+addToppData <- function(sce, 
                                 toppData_results, 
                                 slot_name = "toppData",
                                 include_params = TRUE) {

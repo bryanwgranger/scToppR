@@ -444,7 +444,7 @@ toppPlot.SummarizedExperiment <- function(toppData,
   if (!slot_name %in% names(metadata_obj)) {
     stop("toppData not found in metadata slot '", slot_name, "'. ", 
          "Available metadata slots: ", paste(names(metadata_obj), collapse = ", "), ". ",
-         "Use add_toppData() to add results or specify correct slot_name.")
+         "Use addToppData() to add results or specify correct slot_name.")
   }
   
   extracted_data <- metadata_obj[[slot_name]]
@@ -510,7 +510,7 @@ toppBalloon.SummarizedExperiment <- function(toppData,
   if (!slot_name %in% names(metadata_obj)) {
     stop("toppData not found in metadata slot '", slot_name, "'. ", 
          "Available metadata slots: ", paste(names(metadata_obj), collapse = ", "), ". ",
-         "Use add_toppData() to add results or specify correct slot_name.")
+         "Use addToppData() to add results or specify correct slot_name.")
   }
   
   extracted_data <- metadata_obj[[slot_name]]
